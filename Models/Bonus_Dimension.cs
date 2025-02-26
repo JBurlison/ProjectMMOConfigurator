@@ -8,6 +8,9 @@
         /// <summary>
         /// Dictionary of mob modifiers for each mob type
         /// Key is the mob type, value is a dictionary of attribute modifiers
+        /// Note: ge
+        /// https://minecraft.wiki/w/Attribute for a list of attributes
+        /// https://github.com/Shadows-of-Fire/Apothic-Attributes/blob/1.20/src/main/java/dev/shadowsoffire/attributeslib/api/AttributeHelper.java for a list of attributes
         /// <code>
         ///           "minecraft:zombie": {
         ///            "minecraft:generic.max_health": 0.5, //half health
