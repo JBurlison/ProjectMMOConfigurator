@@ -10,7 +10,13 @@
         public bool noAfkPenalty { get; set; }
         public bool displayGroupName { get; set; }
         public bool showInList { get; set; } = true;
-        public Dictionary<Skill, float> groupfor { get; set; } = [];
+        public Dictionary<string, float> groupfor { get; set; } = [];
 
+    }
+
+    public class SkillsConfig
+    {
+        public string type { get; set; } = "SKILLS";
+        public Dictionary<string, Skill> skills { get; set; } = [];
     }
 }

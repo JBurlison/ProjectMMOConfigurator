@@ -4,7 +4,7 @@
     {
         public bool _override { get; set; }
         public string[] isTagFor { get; set; } = [];
-        public Dictionary<string, List<string>> xp_values { get; set; } = [];
+        public Dictionary<string, Dictionary<string, int>> xp_values { get; set; } = [];
         public Dictionary<string, List<string>> nbt_xp_values { get; set; } = [];
 
         /// <summary>
@@ -44,9 +44,9 @@
         /// </code>
         /// </summary>
         public Dictionary<string, Dictionary<string, int>> requirements { get; set; } = [];
-        public Dictionary<string, Dictionary<string, int>> nbt_requirements { get; set; } = [];
+        public Dictionary<string, List<string>> nbt_requirements { get; set; } = [];
         public Dictionary<string, Dictionary<string, int>> bonuses { get; set; } = [];
-        public Dictionary<string, Dictionary<string, int>> nbt_bonuses { get; set; } = [];
+        public Dictionary<string, List<string>> nbt_bonuses { get; set; } = [];
         public Dictionary<string, int> negative_effect { get; set; } = [];
 
         /// <summary>
