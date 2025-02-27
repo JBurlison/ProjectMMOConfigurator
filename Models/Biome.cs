@@ -1,8 +1,8 @@
 ﻿namespace ProjectMMOConfigurator.Models
 {
-    public class Dimension
+    public class Biome
     {
-        public Dictionary<string, int> travel_req { get; set; } = [];
+        public List<string> isTagFor { get; set; } = [];
         public required Global_Mob_Modifier[] global_mob_modifier { get; set; }
 
         /// <summary>
@@ -25,11 +25,11 @@
         public Dictionary<string, Dictionary<string, float>> mob_modifier { get; set; } = [];
         public List<string> vein_blacklist { get; set; } = [];
         public bool Override { get; set; }
-        public Bonus bonus { get; set; } = new Bonus();
+        public BiomeBonus bonus { get; set; } = new BiomeBonus();
     }
 
-    public class Bonus
+    public class BiomeBonus
     {
-        public Dictionary<string, float> Dimension { get; set; } = [];
+        public Dictionary<string, float> Biome { get; set; } = [];
     }
 }
