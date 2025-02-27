@@ -1,5 +1,8 @@
 ﻿namespace ProjectMMOConfigurator.Models
 {
+    /// <summary>
+    ///  NOTE that the min and max is for information purposes only, the UI does not enforce it.
+    /// </summary>
     internal static class Attributes
     {
         public static Dictionary<string, (double min, double max)> Values = new()

@@ -8,9 +8,7 @@
         /// <summary>
         /// Dictionary of mob modifiers for each mob type
         /// Key is the mob type, value is a dictionary of attribute modifiers
-        /// Note: ge
-        /// https://minecraft.wiki/w/Attribute for a list of attributes
-        /// https://github.com/Shadows-of-Fire/Apothic-Attributes/blob/1.20/src/main/java/dev/shadowsoffire/attributeslib/api/AttributeHelper.java for a list of attributes
+        /// Attrbuts can be found in attributes.cs. NOTE that the min and max is for information purposes only, the UI does not enforce it.
         /// <code>
         ///           "minecraft:zombie": {
         ///            "minecraft:generic.max_health": 0.5, //half health
@@ -23,13 +21,19 @@
         /// </code>
         /// </summary>
         public Dictionary<string, Dictionary<string, float>> mob_modifier { get; set; } = [];
+        /// <summary>
+        /// a list of ore ids to ignore when vein mining
+        /// </summary>
         public List<string> vein_blacklist { get; set; } = [];
-        public bool Override { get; set; }
+        public bool _override { get; set; } = true;
         public Bonus bonus { get; set; } = new Bonus();
     }
 
     public class Bonus
     {
+        /// <summary>
+        /// dictionary of skill and bonus experience gain from being in the dimension
+        /// </summary>
         public Dictionary<string, float> Dimension { get; set; } = [];
     }
 }

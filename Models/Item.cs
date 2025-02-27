@@ -2,9 +2,16 @@
 {
     public class Item
     {
-        public bool _override { get; set; }
+        public bool _override { get; set; } = true;
         public string[] isTagFor { get; set; } = [];
+        /// <summary>
+        /// See <see cref="ItemEventTypes"/> for keys of the first dictionary. Second dictionary is the skill and value is xp gain
+        /// </summary>
         public Dictionary<string, Dictionary<string, int>> xp_values { get; set; } = [];
+
+        /// <summary>
+        /// See <see cref="ItemEventTypes"/> for the keys of the first dictionary. the list is the nbt rules.
+        /// </summary>
         public Dictionary<string, List<string>> nbt_xp_values { get; set; } = [];
 
         /// <summary>
@@ -29,7 +36,7 @@
         public Dictionary<string, Dictionary<string, Dictionary<string, int>>> damage_type_xp { get; set; } = [];
 
         /// <summary>
-        /// Dictionary of each Item requirement and the requied skill & level
+        /// See <see cref="ItemRequirement"/> for first dictionary. Dictionary of each Item requirement and the requied skill & level
         /// 
         /// <code>
         /// "requirements": {
@@ -44,9 +51,24 @@
         /// </code>
         /// </summary>
         public Dictionary<string, Dictionary<string, int>> requirements { get; set; } = [];
+        /// <summary>
+        /// /// See <see cref="ItemRequirement"/> for the keys of the first dictionary. the list is the nbt rules.
+        /// </summary>
         public Dictionary<string, List<string>> nbt_requirements { get; set; } = [];
+
+        /// <summary>
+        /// The first dictionary only has 2 valid keys HEALD & WORN. the second dictionary is the skill & level
+        /// </summary>
         public Dictionary<string, Dictionary<string, int>> bonuses { get; set; } = [];
+
+        /// <summary>
+        /// The first dictionary only has 2 valid keys HEALD & WORN. the list is the nbt rules.
+        /// </summary>
         public Dictionary<string, List<string>> nbt_bonuses { get; set; } = [];
+
+        /// <summary>
+        /// key is a effect such as minecraft:slowness or minecraft:mining_fatigue, value is the level of the effect.
+        /// </summary>
         public Dictionary<string, int> negative_effect { get; set; } = [];
 
         /// <summary>
@@ -92,5 +114,33 @@
     {
         public int chargeCap { get; set; }
         public float chargeRate { get; set; }
+    }
+
+    public static class ItemEventTypes
+    {
+        public const string ANVIL_REPAIR = "ANVIL_REPAIR";
+        public const string BLOCK_BREAK = "BLOCK_BREAK";
+        public const string BLOCK_PLACE = "BLOCK_PLACE";
+        public const string BREW = "BREW";
+        public const string CONSUME = "CONSUME";
+        public const string CRAFT = "CRAFT";
+        public const string TOOL_BREAKING = "TOOL_BREAKING";
+        public const string ENCHANT = "ENCHANT";
+        public const string FISH = "FISH";
+        public const string SMELT = "SMELT";
+        public const string GIVEN_AS_TRADE = "GIVEN_AS_TRADE";
+        public const string ACTIVATE_ITEM = "ACTIVATE_ITEM";
+        public const string RECEIVED_AS_TRADE = "RECEIVED_AS_TRADE";
+    }
+
+    public static class ItemRequirement
+    {
+        public const string WEAR = "WEAR";
+        public const string TOOL = "TOOL";
+        public const string WEAPON = "WEAPON";
+        public const string USE = "USE";
+        public const string PLACE = "PLACE";
+        public const string BREAK = "BREAK";
+        public const string INTERACT = "INTERACT";
     }
 }
