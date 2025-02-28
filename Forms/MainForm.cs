@@ -53,8 +53,8 @@ namespace ProjectMMOConfigurator.Forms
             var saveButton = new ToolStripButton("Save");
             saveButton.Click += SaveButton_Click;
 
-            var searchSkillsButton = new ToolStripButton("Search Skills");
-            searchSkillsButton.Click += SearchSkillsButton_Click;
+            var manageSkillsButton = new ToolStripButton("Manage Skills");
+            manageSkillsButton.Click += OpenSkillsManagerButton_Click;
 
             var batchEditButton = new ToolStripButton("Batch Edit");
             batchEditButton.Click += BatchEditButton_Click;
@@ -65,7 +65,7 @@ namespace ProjectMMOConfigurator.Forms
                 new ToolStripSeparator(),
                 saveButton,
                 new ToolStripSeparator(),
-                searchSkillsButton,
+                manageSkillsButton,
                 batchEditButton
             });
 
@@ -110,7 +110,7 @@ namespace ProjectMMOConfigurator.Forms
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
                 _rootDirectory = folderBrowserDialog.SelectedPath;
-                LoadFilesFromFolder(_rootDirectory);
+                _ = LoadFilesFromFolder(_rootDirectory, recursive: true);
             }
         }
 
@@ -130,16 +130,10 @@ namespace ProjectMMOConfigurator.Forms
             }
         }
 
-        private void SearchSkillsButton_Click(object sender, EventArgs e)
+        private void OpenSkillsManagerButton_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(_rootDirectory))
-            {
-                _ = MessageBox.Show("Please open a folder first", "No Folder Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            using var searchForm = new SearchSkillsForm(_skillSearchService, _rootDirectory);
-            _ = searchForm.ShowDialog();
+            using var skillsManagerForm = new SkillsManagerForm(_jsonFileService, _modelFactory);
+            _ = skillsManagerForm.ShowDialog();
         }
 
         private void BatchEditButton_Click(object sender, EventArgs e)
@@ -178,18 +172,23 @@ namespace ProjectMMOConfigurator.Forms
             }
         }
 
-        private void LoadFilesFromFolder(string folderPath)
+        private async Task LoadFilesFromFolder(string folderPath, bool recursive = false)
         {
             try
             {
                 ShowProgressBar(true);
                 UpdateStatusLabel("Loading files...");
 
-                _loadedFilesByType = _fileSystemService.GetJsonFilesByType(folderPath);
+                // Use the recursive method if requested
+                _loadedFilesByType = recursive
+                    ? await _fileSystemService.GetJsonFilesByTypeRecursively(folderPath)
+                    : _fileSystemService.GetJsonFilesByType(folderPath);
 
                 PopulateTreeView(_loadedFilesByType);
 
-                UpdateStatusLabel($"Loaded {_loadedFilesByType.Values.SelectMany(x => x).Count()} files from {folderPath}");
+                var totalFiles = _loadedFilesByType.Values.SelectMany(x => x).Count();
+                var searchType = recursive ? "recursively" : "in top directory";
+                UpdateStatusLabel($"Loaded {totalFiles} files {searchType} from {folderPath}");
             }
             catch (Exception ex)
             {

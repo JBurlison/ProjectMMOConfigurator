@@ -1,6 +1,3 @@
-using System;
-using System.IO;
-using System.Threading.Tasks;
 using ProjectMMOConfigurator.Models;
 
 namespace ProjectMMOConfigurator.Services
@@ -9,22 +6,19 @@ namespace ProjectMMOConfigurator.Services
     {
         private readonly JsonFileService _jsonFileService;
 
-        public ModelFactory(JsonFileService jsonFileService)
-        {
-            _jsonFileService = jsonFileService;
-        }
+        public ModelFactory(JsonFileService jsonFileService) => _jsonFileService = jsonFileService;
 
-        public async Task<object> CreateModelFromFileAsync(string filePath)
+        public async Task<object?> CreateModelFromFileAsync(string filePath)
         {
             if (!_jsonFileService.IsJsonFile(filePath))
                 throw new ArgumentException("Not a JSON file", nameof(filePath));
 
-            string parentFolderName = new DirectoryInfo(Path.GetDirectoryName(filePath)).Name;
-            
+            var parentFolderName = new DirectoryInfo(Path.GetDirectoryName(filePath)).Name;
+
             // Handle config folder special case
             if (parentFolderName.Equals("config", StringComparison.OrdinalIgnoreCase))
             {
-                string fileName = Path.GetFileName(filePath);
+                var fileName = Path.GetFileName(filePath);
                 if (fileName.Equals("skills.json", StringComparison.OrdinalIgnoreCase))
                 {
                     return await _jsonFileService.LoadAsync<SkillsConfig>(filePath);
@@ -36,11 +30,11 @@ namespace ProjectMMOConfigurator.Services
             // Handle regular model types based on parent folder name
             return parentFolderName.ToLowerInvariant() switch
             {
-                "biome" => await _jsonFileService.LoadAsync<Biome>(filePath),
+                "biomes" => await _jsonFileService.LoadAsync<Biome>(filePath),
                 "blocks" => await _jsonFileService.LoadAsync<Blocks>(filePath),
-                "dimension" => await _jsonFileService.LoadAsync<Dimension>(filePath),
-                "entity" => await _jsonFileService.LoadAsync<Entity>(filePath),
-                "item" => await _jsonFileService.LoadAsync<Item>(filePath),
+                "dimensions" => await _jsonFileService.LoadAsync<Dimension>(filePath),
+                "entities" => await _jsonFileService.LoadAsync<Entity>(filePath),
+                "items" => await _jsonFileService.LoadAsync<Item>(filePath),
                 _ => null // No matching model
             };
         }
@@ -49,11 +43,11 @@ namespace ProjectMMOConfigurator.Services
         {
             return folderName.ToLowerInvariant() switch
             {
-                "biome" => typeof(Biome),
+                "biomes" => typeof(Biome),
                 "blocks" => typeof(Blocks),
-                "dimension" => typeof(Dimension),
-                "entity" => typeof(Entity),
-                "item" => typeof(Item),
+                "dimensions" => typeof(Dimension),
+                "entities" => typeof(Entity),
+                "items" => typeof(Item),
                 "config" => typeof(SkillsConfig),
                 _ => null
             };
