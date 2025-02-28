@@ -1,19 +1,41 @@
-using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using System;
+using System.Windows.Forms;
+using Microsoft.Extensions.DependencyInjection;
+using ProjectMMOConfigurator.Forms;
+using ProjectMMOConfigurator.Services;
 
 namespace ProjectMMOConfigurator
 {
-    public class Program
+    static class Program
     {
-        public static async Task Main(string[] args)
+        /// <summary>
+        /// The main entry point for the application.
+        /// </summary>
+        [STAThread]
+        static void Main()
         {
-            var builder = WebAssemblyHostBuilder.CreateDefault(args);
-            builder.RootComponents.Add<App>("#app");
-            builder.RootComponents.Add<HeadOutlet>("head::after");
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-
-            await builder.Build().RunAsync();
+            var services = new ServiceCollection();
+            ConfigureServices(services);
+            
+            using (var serviceProvider = services.BuildServiceProvider())
+            {
+                var mainForm = serviceProvider.GetRequiredService<MainForm>();
+                Application.Run(mainForm);
+            }
+        }
+        
+        private static void ConfigureServices(IServiceCollection services)
+        {
+            services.AddSingleton<JsonFileService>();
+            services.AddSingleton<ModelFactory>();
+            services.AddSingleton<FileSystemService>();
+            services.AddSingleton<SkillSearchService>();
+            services.AddSingleton<BatchEditService>();
+            
+            services.AddSingleton<MainForm>();
         }
     }
 }
